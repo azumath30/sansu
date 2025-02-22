@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数唱練習</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        h5 {
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            margin-top: 0; 
+            border-collapse: collapse;
+            width: 800;
+            text-align: center;
+            margin-left: 150px;
+            margin-right: 50px;
+        }
+        td {
+            border: 1px solid black;
+            width: 60px;
+            padding: 10px;
+            font-size: 24px;
+            color: blue;
+            cursor: pointer;
+            position: relative;
+        }
+        .row-group {
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <h5>１００までおぼえよう！</h5>
+    <table>
+        <tr>
+            <script>
+                let tableContent = "";
+                for (let i = 1; i <= 100; i++) {
+                    if (i % 10 === 1) {
+                        tableContent += '<tr class="row-group">';
+                    }
+                    tableContent += `<td onclick="toggleVisibility(this)" data-number="${i}">${i}</td>`;
+                    if (i % 10 === 0) {
+                        tableContent += '</tr>';
+                    }
+                }
+                document.write(tableContent);
+            </script>
+        </tr>
+    </table>
+    
+    <script>
+        function toggleVisibility(cell) {
+            if (cell.innerText === "") {
+                cell.innerText = cell.dataset.number;
+            } else {
+                cell.dataset.number = cell.innerText;
+                cell.innerText = "";
+            }
+        }
+        
+        document.addEventListener("keydown", function(event) {
+            let selected = document.querySelector("td.selected");
+            if (!selected) {
+                document.querySelector("td").classList.add("selected");
+                return;
+            }
+            
+            let next;
+            if (event.key === "ArrowRight") {
+                next = selected.nextElementSibling;
+            } else if (event.key === "ArrowLeft") {
+                next = selected.previousElementSibling;
+            } else if (event.key === "ArrowDown") {
+                let index = Array.from(selected.parentNode.children).indexOf(selected);
+                let nextRow = selected.parentNode.nextElementSibling;
+                if (nextRow) next = nextRow.children[index];
+            } else if (event.key === "ArrowUp") {
+                let index = Array.from(selected.parentNode.children).indexOf(selected);
+                let prevRow = selected.parentNode.previousElementSibling;
+                if (prevRow) next = prevRow.children[index];
+            }
+            
+            if (next && next.tagName === "TD") {
+                selected.classList.remove("selected");
+                next.classList.add("selected");
+            }
+        });
+    </script>
+</body>
+</html>
