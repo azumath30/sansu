@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数唱練習</title>
+    <style>
+        h5 {
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse; /*隣接セルの境界線を同士を間を空けて表示します。*/
+            /* width: 100%; */
+            width: 800px;
+            text-align: center;
+            margin-left: 50px;
+            margin-right: 50px;
+        }
+        td {
+            width: 80px;
+            height: 36px;
+            border: 1px solid black;
+            padding: 10px;
+            font-size: 24px;
+            color: blue;
+            cursor: pointer;
+        }
+        .selected-row {
+            border: 5px solid red;
+        }
+    </style>
+</head>
+<body>
+    <h5>１００までおぼえよう！</h5>
+    <table>
+        <script>
+            let tableContent = "";
+            for (let i = 1; i <= 100; i++) {
+                if (i % 10 === 1) {
+                    tableContent += '<tr>';
+                }
+                tableContent += `<td onclick="toggleVisibility(this)" data-number="${i}">${i}</td>`;
+                if (i % 10 === 0) {
+                    tableContent += '</tr>';
+                }
+            }
+            document.write(tableContent);
+        </script>
+    </table>
+    
+    <script>
+        function toggleVisibility(cell) {
+            if (cell.innerText === "") {
+                cell.innerText = cell.dataset.number;
+            } else {
+                cell.dataset.number = cell.innerText;
+                cell.innerText = "";
+            }
+        }
+        
+        document.addEventListener("keydown", function(event) {
+            let selectedRow = document.querySelector("tr.selected-row");
+            if (!selectedRow) {
+                document.querySelector("tr").classList.add("selected-row");
+                return;
+            }
+            
+            let nextRow;
+            if (event.key === "ArrowDown") {
+                nextRow = selectedRow.nextElementSibling;
+            } else if (event.key === "ArrowUp") {
+                nextRow = selectedRow.previousElementSibling;
+            }
+            
+            if (nextRow && nextRow.tagName === "TR") {
+                selectedRow.classList.remove("selected-row");
+                nextRow.classList.add("selected-row");
+            }
+        });
+    </script>
+</body>
+</html>
